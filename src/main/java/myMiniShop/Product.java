@@ -20,5 +20,7 @@ class Product {
         this.amount = amount;
         this.discountAmount = discountAmount;
     }
+    public Product(){
+    }
 }
 

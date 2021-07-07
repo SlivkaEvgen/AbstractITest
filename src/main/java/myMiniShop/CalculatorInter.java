@@ -1,10 +1,10 @@
 package myMiniShop;
 
-abstract class CalculatorInter {
-    abstract void checkingProductsInBasket(String basket);
+interface CalculatorInter {
+    void checkingProductsInBasket(String basket);
 
-    abstract void countProductsInBasket(String basket);
+    void countProductsInBasket(String basket);
 
-   abstract double calculateTotalCost(String basket);
+   double calculateTotalCost(String basket);
 
 }
