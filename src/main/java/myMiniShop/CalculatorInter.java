@@ -5,6 +5,6 @@ interface CalculatorInter {
 
     void countProductsInBasket(String basket);
 
-   void calculateTotalCost(String basket);
+    void calculateTotalCost(String basket);
 
 }

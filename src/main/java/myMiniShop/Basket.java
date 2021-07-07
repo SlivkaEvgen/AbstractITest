@@ -1,14 +1,14 @@
 package myMiniShop;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import java.util.Locale;
 
 @EqualsAndHashCode()
 @Data
 public final class Basket implements CalculatorInter {
+    @lombok.Setter
     private String basket;
+    @lombok.Setter
     private double totalPrice;
 
     public Basket(final String basket) {
@@ -18,6 +18,9 @@ public final class Basket implements CalculatorInter {
 
     @Override
     public void checkingProductsInBasket(String basket) {
+        if (basket == null){
+            return;
+        }
         this.basket = basket.toUpperCase(Locale.ROOT);
         String[] basketChars = this.basket.split("");
         boolean s = true;
@@ -34,8 +37,7 @@ public final class Basket implements CalculatorInter {
         if (s) {
             calculateTotalCost(this.basket);
         } else {
-            System.out.println("Try again! basket == NULL "
-                    + "\n checkingProductsInBasket()");
+            System.out.println("Try again! basket has not products");
         }
     }
 
@@ -49,7 +51,6 @@ public final class Basket implements CalculatorInter {
             String[] basketChars = this.basket.split("");
             for (int i = 0; i <= Store.products.size() - 1; i++) {
                 Store.products.get(i).setAmount(0.0d);
-                //  String d = myMiniShop.Store.products.get(i).toString();
                 for (int j = 0; j <= basketChars.length - 1; j++) {
                     String basketChar = basketChars[j];
                     String name = Store.products.get(i).getName();
