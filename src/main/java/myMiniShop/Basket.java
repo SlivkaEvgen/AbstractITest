@@ -62,7 +62,7 @@ public final class Basket implements CalculatorInter {
     }
 
     @Override
-    public double calculateTotalCost(String basket) {
+    public void calculateTotalCost(String basket) {
         countProductsInBasket(basket);
         for (int i = 0; i <= Store.products.size() - 1; i++) {
             double amount = Store.products.get(i).getAmount();
@@ -83,6 +83,5 @@ public final class Basket implements CalculatorInter {
                 totalPrice += result;
             }
         }
-        return totalPrice;
     }
 }
