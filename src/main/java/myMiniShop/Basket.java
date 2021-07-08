@@ -1,13 +1,12 @@
 package myMiniShop;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
-import java.util.Locale;
-
 @EqualsAndHashCode()
 @Data
-public final class Basket implements CalculatorInter {
+public final class Basket implements CalculatorImpl {
     @Setter
     private String basket;
     @Setter
@@ -15,79 +14,52 @@ public final class Basket implements CalculatorInter {
 
     public Basket(final String basket) {
         this.basket = basket;
-        checkingProductsInBasket(basket);
+        if (this.basket != null) {
+            this.basket = basket.toUpperCase();
+            checkingProductsInBasket(this.basket);
+        }
     }
 
     @Override
     public void checkingProductsInBasket(final String basket) {
-        if (basket == null) {
-            return;
-        }
-        this.basket = basket.toUpperCase(Locale.ROOT);
-        String[] basketChars = this.basket.split("");
-        boolean s = true;
-        for (int i = 0; i <= basketChars.length - 1; i++) {
-            String a = basketChars[i];
-            for (int j = 0; j <= Store.products.size() - 1; j++) {
-                String b = Store.products.get(j).getName();
-                if (b.equals(a)) {
-                    s = true;
-                    break;
-                } else {
-                    s = false;
-                }
-            }
-        }
-        if (s) {
-            calculateTotalCost(this.basket);
-        } else {
-            System.out.println("Try again! basket has not products");
+        int count = 0;
+        for (String basketChar : this.basket.split("")) {
+            for (Product product : Store.products)
+                if (product.getName().equals(basketChar))
+                    count++;
+            countProductsInBasket(this.basket);
+            break;
         }
     }
 
     @Override
     public void countProductsInBasket(String basket) {
-        this.basket = basket;
-        if (this.basket == null) {
-            System.out.println("Try again! basket = NULL, \n countProductsInBasket()");
-        } else {
+        if (basket != null) {
             double count = 0.0d;
-            String[] basketChars = this.basket.split("");
-            for (int i = 0; i <= Store.products.size() - 1; i++) {
-                Store.products.get(i).setAmount(0.0d);
-                for (int j = 0; j <= basketChars.length - 1; j++) {
-                    String basketChar = basketChars[j];
-                    String name = Store.products.get(i).getName();
-                    if (!basketChar.equals(name)) {
-                        continue;
-                    }
-                    Store.products.get(i).setAmount(Store.products.get(i).getAmount() + count + 1);
-                }
+            for (Product product : Store.products) {
+                product.setAmount(0.0d);
+                for (String basketChar : this.basket.split(""))
+                    if (basketChar.equals(product.getName()))
+                        product.setAmount(product.getAmount() + count + 1);
                 count = 0.0d;
             }
+            calculateTotalCost(this.basket);
         }
     }
 
     @Override
     public void calculateTotalCost(String basket) {
-        countProductsInBasket(basket);
-        for (int i = 0; i <= Store.products.size() - 1; i++) {
-            double amount = Store.products.get(i).getAmount();
-            double discountPrice = Store.products.get(i).getDiscountPrice();
-            double price = Store.products.get(i).getPrice();
-            double discountAmount = Store.products.get(i).getDiscountAmount();
-            double result;
+        for (Product product : Store.products) {
+            double amount = product.getAmount();
+            double price = product.getPrice();
+            double discountPrice = product.getDiscountPrice();
+            double discountAmount = product.getDiscountAmount();
+            int a = (int) (amount / discountAmount);
+
             if (amount < discountPrice) {
-                price = amount * price;
-                result = price;
-                totalPrice += result;
-            }
-            if (amount >= discountAmount) {
-                int a = (int) (amount / discountAmount);
-                amount = amount - discountAmount * a;
-                discountPrice = discountPrice * a;
-                result = price * amount + discountPrice;
-                totalPrice += result;
+                totalPrice += amount * price;
+            } else {
+                totalPrice += price * (amount - discountAmount * a) + discountPrice * a;
             }
         }
     }

@@ -1,6 +1,6 @@
 package myMiniShop;
 
-interface CalculatorInter {
+interface CalculatorImpl {
     void checkingProductsInBasket(String basket);
 
     void countProductsInBasket(String basket);

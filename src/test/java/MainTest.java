@@ -7,6 +7,7 @@ public class MainTest {
     String basket3 = "12345//)'.";
     String basket4 = "\"\\\\.(gif|jpg|png)$\"";
     String basketNull = null;
+
     @Test
     public void testMain() {
         Basket basket = new Basket(this.basket);
@@ -34,16 +35,16 @@ public class MainTest {
         Assert.assertEquals(result1, new Basket("aaa, aaa, aaa"));
 
     }
+
     @Test(expected = AssertionError.class)
-    public void should_Ignore_IndexOF_Or_Null(){
+    public void shouldIgnoreIndexOFOrNull() {
         Basket basket = new Basket(this.basket);
-       // Product d = new Product("A",2.25d,17.0d, 2.0d, 17.0d);
         try {
             basket.countProductsInBasket(null);
             Assert.fail("Not");
-        }catch (AssertionError es) {
+        } catch (AssertionError es) {
             Assert.assertEquals(this.basket, basket.getBasket());
-            Assert.assertEquals(12.12d, basket.getTotalPrice(),0.01d);
+            Assert.assertEquals(12.12d, basket.getTotalPrice(), 0.01d);
             Assert.assertEquals(basket, new Basket(null));
             Assert.assertNull(this.basket);
         }

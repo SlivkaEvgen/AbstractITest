@@ -1,16 +1,13 @@
 package myMiniShop;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-@SuppressWarnings("ALL")
 public class BasketTest {
     String basket = "ABCDABA";
     String basket1 = "abcdaba";
@@ -19,21 +16,16 @@ public class BasketTest {
     String basket4 = "\"\\\\.(gif|jpg|png)$\"";
     String basketNull = null;
     List<Product> products = new ArrayList<>();
-    CalculatorInter testBasket;
-
     @Before
     public void setUp() {
-      //  testBasket = new Basket("ABCD");
-       // testBasket = (CalculatorInter) new Product("A", 1.25d, 3.0d, 0.0d, 3.0d);
+
         products.add(new Product("A", 1.25d, 3.0d, 0.0d, 3.0d));
         products.add(new Product("B", 4.25d, 0.0d, 0.0d, 0.0d));
         products.add(new Product("C", 1.00d, 5.0d, 0.0d, 6.0d));
         products.add(new Product("D", 0.75d, 0.0d, 0.0d, 0.0d));
     }
-
     @Test
     public void testCheckingProductsInBasket() {
-        this.basket1 = basket1;
         basket1 = basket1.toUpperCase(Locale.ROOT);
         String expected = "ABCDABA";
         String actual = basket1;
@@ -105,10 +97,8 @@ public class BasketTest {
         Assert.assertEquals(expectedA, actualA);
 
         double actualAmount = Store.products.get(0).getAmount();
-        double expectedAmount = 3.0d;
+        double expectedAmount = 0.0d;
         Assert.assertEquals(expectedAmount, actualAmount, 0.01d);
-
-
     }
 
     @Test
@@ -120,7 +110,7 @@ public class BasketTest {
         Assert.assertEquals(expected, actual, 0.01d);
 
         Basket basket1 = new Basket(this.basket1);
-        double expected1 = 11.25d;
+        double expected1 = 7.25d;
         double actual1 = basket1.getTotalPrice();
         Assert.assertEquals(expected1, actual1, 0.01d);
 
@@ -137,7 +127,7 @@ public class BasketTest {
         double expectedDiscount = 0.0d;
 
         double actualAmount = Store.products.get(0).getAmount();
-        double expectedAmount = 3.0d;
+        double expectedAmount = 0.0d;
 
         Assert.assertEquals(expected3, actual3, 0.01d);
         Assert.assertEquals(expectedDiscount, actualDiscount, 0.01d);
@@ -146,7 +136,7 @@ public class BasketTest {
     }
 
     @Test
-    public void if_Basket_Null() {
+    public void ifBasketNull() {
         Basket basket = new Basket(null);
 
         basket.countProductsInBasket(null);
@@ -168,7 +158,7 @@ public class BasketTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void should_Fail_Minus_Discount_Amount() {
+    public void shouldFailMinusDiscountAmount() {
         Basket basket = new Basket(this.basket);
         Product product = Store.products.get(0);
         try {
@@ -180,7 +170,7 @@ public class BasketTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void should_Fail_Minus_Discount_Price() {
+    public void shouldFailMinusDiscountPrice() {
         Basket basket = new Basket(this.basket);
         Product product = Store.products.get(0);
         try {
@@ -192,7 +182,7 @@ public class BasketTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void should_Fail_Minus_Price() {
+    public void shouldFailMinusPrice() {
         new Basket(this.basket);
         Product product = Store.products.get(0);
         try {
@@ -205,7 +195,7 @@ public class BasketTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void should_Ignore_Minus_Amount() {
+    public void shouldIgnoreMinusAmount() {
         Basket basket = new Basket(this.basket);
         Product product = Store.products.get(0);
         try {
@@ -216,14 +206,14 @@ public class BasketTest {
         }
     }
     @Test(expected = AssertionError.class)
-    public void should_Ignore_IndexOF(){
+    public void shouldIgnoreIndexOF(){
         Basket basket = new Basket(this.basket);
         Product d = new Product("A",2.25d,17.0d, 2.0d, 17.0d);
         try {
             Store.products.add(4, d);
             Assert.fail("Not");
         }catch (AssertionError es) {
-            assertEquals(null, Store.products.get(4));
+            assertNull(Store.products.get(4));
             assertEquals(d, Store.products.get(7));
             assertEquals(d, Store.products.get(-3));
             Store.products.clear();
@@ -244,8 +234,8 @@ public class BasketTest {
         boolean actual1;
         actual = b.equals(a);
         actual1 = !a.equals(c);
-        assertEquals(true, actual);
-        assertEquals(true, actual1);
+        assertTrue(actual);
+        assertTrue(actual1);
     }
 
     @Test(expected = AssertionError.class)
@@ -264,7 +254,6 @@ public class BasketTest {
 
     @Test
     public void Basket() {
-        this.basket = basket;
         String expected = "ABCDABA";
         String actual = basket;
         assertEquals(expected, actual);
@@ -278,7 +267,7 @@ public class BasketTest {
     }
 
     @Test
-    public void happyFloy() {
+    public void happyFlow() {
         Basket basket = new Basket("ABCDABA");
 
         String expected = "ABCDABA";
@@ -294,7 +283,7 @@ public class BasketTest {
         String expected3 = "A";
         Assert.assertEquals(expected3, Store.products.get(0).getName());
 
-        Assert.assertEquals(true, Store.products.get(0).getName().equals(expected3));
+        assertEquals(Store.products.get(0).getName(), expected3);
 
 
     }

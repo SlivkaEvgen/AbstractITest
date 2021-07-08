@@ -23,4 +23,9 @@ class Product {
         this.amount = amount;
         this.discountAmount = discountAmount;
     }
+    public Product(CalculatorImpl prod) {
+    }
+    public Product getAllProducts(int id) {
+        return Store.products.get(id);
+    }
 }

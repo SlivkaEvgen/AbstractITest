@@ -1,14 +1,14 @@
 package myMiniShop;
-
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.Contract;
 
+@SuppressWarnings("ALL")
 @EqualsAndHashCode(callSuper = false)
 @Data
-class Store{
+class Store extends Product{
     protected static List<Product> products = new ArrayList<>();
     static
     {
@@ -19,5 +19,6 @@ class Store{
     }
     @Contract(pure = true)
     public Store(){
+        super("A", 0.0d, 0.0d, 0.0d, 0.0d);
     }
 }
