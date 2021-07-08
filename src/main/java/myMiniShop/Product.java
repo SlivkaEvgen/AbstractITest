@@ -1,18 +1,19 @@
 package myMiniShop;
 
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 class Product {
-    @lombok.Setter
+    @Setter
     private String name;
-    @lombok.Setter
+    @Setter
     private double price;
-    @lombok.Setter
+    @Setter
     private double discountPrice;
-    @lombok.Setter
+    @Setter
     private double amount;
-    @lombok.Setter
+    @Setter
     private double discountAmount;
 
     protected Product(String name, double price, double discountPrice, double amount, double discountAmount) {
