@@ -21,7 +21,7 @@ public class MockitoProductTest {
     @Mock
     CalculatorImpl prod;
     @InjectMocks
-    Product productNew = new Product(prod);
+    Store productNew = new Store(prod);
     static List<Product> products = new ArrayList<>();
 
     @Before
@@ -34,43 +34,41 @@ public class MockitoProductTest {
 
     @Test
     public void mockitoGetAllProductsTest() {
-        Product productNew = mock(Product.class);
-
-        String result = productNew.getName() + ", " + productNew.getName();
-
+        String result = mock(Product.class).getName() + ", " + mock(Product.class).getName();
         assertEquals(null, "null, null", result);
 
         Store store = mock(Store.class);
-        when(store.getAllProducts(0)).thenReturn(products.get(0));
-        assertEquals(products.get(0), store.getAllProducts(0));
+        when(store.getProduct(0)).thenReturn(products.get(0));
+        assertEquals(products.get(0), store.getProduct(0));
 
-        Store store1 = mock(Store.class);
-        assertNull(store1.getAllProducts(0));
-        assertEquals(1.25d,Store.products.get(0).getPrice(),0.01d);
-        assertEquals(1.0d,Store.products.get(0).getAmount(),0.01d);
-        assertEquals(3.0d,Store.products.get(0).getDiscountAmount(),0.01d);
-        assertEquals(3.0d,Store.products.get(0).getDiscountPrice(),0.01d);
-        assertEquals("A",Store.products.get(0).getName());
-        Store.products.get(3).setAmount(0);
-        assertEquals(0,Store.products.get(3).getAmount(),0.0d);
+        assertNull(mock(Store.class).getProduct(0));
+        assertEquals(1.25d, new Store().getProduct(0).getPrice(), 0.01d);
+        assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
+        assertEquals(3.0d, new Store().getProduct(0).getDiscountAmount(), 0.01d);
+        assertEquals(3.0d, new Store().getProduct(0).getDiscountPrice(), 0.01d);
+        assertEquals("A", new Store().getProduct(0).getName());
+        new Store().getProduct(3).setAmount(0);
+        assertEquals(0, new Store().getProduct(3).getAmount(), 0.0d);
     }
+
     @Test(expected = IndexOutOfBoundsException.class)
     public void shouldIgnoreIndexOutOfBoundsException() {
-        Product productNew = mock(Product.class);
-        Basket basket = new Basket("basket");
-        Product d = new Product("A",2.25d,17.0d, 2.0d, 17.0d);
         try {
-            Store.products.get(5);
+            Product productNew = mock(Product.class);
+            new Basket("basket");
+            new Store().getProduct(5);
             Assert.fail("IndexOutOfBoundsException");
-        }catch (AssertionError es) {
-            assertNull(Store.products.get(4));
-            assertEquals(d, Store.products.get(7));
-            assertEquals(d, Store.products.get(-3));
-            assertEquals(null, Store.products.get(5));
-            Store.products.clear();
-            assertEquals(d, Store.products.get(0));
+        } catch (AssertionError es) {
+            assertNull(new Store().getProduct(4));
+            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                    new Store().getProduct(7));
+            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                    new Store().getProduct(-3));
+            assertNull(new Store().getProduct(5));
+            new Store().getProducts().clear();
+            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                    new Store().getProduct(0));
         }
-
     }
 }
 

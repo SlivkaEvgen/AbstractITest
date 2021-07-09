@@ -1,7 +1,9 @@
 package myMiniShop;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -14,155 +16,78 @@ public class BasketTest {
     String basket2 = "АБСДАБА";
     String basket3 = "12345//)'.";
     String basket4 = "\"\\\\.(gif|jpg|png)$\"";
-    String basketNull = null;
     List<Product> products = new ArrayList<>();
+
     @Before
     public void setUp() {
-
         products.add(new Product("A", 1.25d, 3.0d, 0.0d, 3.0d));
         products.add(new Product("B", 4.25d, 0.0d, 0.0d, 0.0d));
         products.add(new Product("C", 1.00d, 5.0d, 0.0d, 6.0d));
         products.add(new Product("D", 0.75d, 0.0d, 0.0d, 0.0d));
     }
+
     @Test
     public void testCheckingProductsInBasket() {
-        basket1 = basket1.toUpperCase(Locale.ROOT);
-        String expected = "ABCDABA";
-        String actual = basket1;
-        Assert.assertNotNull(actual);
-        assertEquals(expected, actual);
-        Product d = new Product("A",2.25d,17.0d, 2.0d, 17.0d);
-        Store.products.add(4, d);
-        assertEquals(d, Store.products.get(4));
-        String[] actual1 = this.basket.split("");
+        Assert.assertNotNull(basket1.toUpperCase(Locale.ROOT));
+        assertEquals("ABCDABA", basket1.toUpperCase(Locale.ROOT));
+        List<Product> products = new Store().getProducts();
+        products.add(4, new Product("A", 2.25d, 17.0d, 2.0d, 17.0d));
+        assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                products.get(4));
+
         String[] expected1 = {"A", "B", "C", "D", "A", "B", "A"};
-        Assert.assertNotNull(actual1);
-        Assert.assertArrayEquals(expected1, actual1);
-
+        Assert.assertNotNull(this.basket.split(""));
+        Assert.assertArrayEquals(expected1, this.basket.split(""));
         String actual2 = expected1[0];
-        String expected2 = "A";
-        Assert.assertNotNull(expected2);
-        assertEquals(expected2, actual2);
-
-        Basket basket = new Basket("\\.(gif|jpg|png)$");
-        String actual3 = basket.getBasket();
-        String expected3 = "\\.(GIF|JPG|PNG)$";
-        Assert.assertEquals(expected3, actual3);
-
-        Basket basket1 = new Basket(null);
-        String actual4 = basket1.getBasket();
-        String expected4 = null;
-        Assert.assertEquals(expected4, actual4);
+        String null1 = "A";
+        Assert.assertNotNull(null1);
+        assertEquals("A", actual2);
+        Assert.assertEquals("\\.(GIF|JPG|PNG)$", new Basket("\\.(gif|jpg|png)$").getBasket());
+        assertNull(new Basket(null).getBasket());
     }
 
     @Test
     public void testCountProductsInBasket() {
-        Basket basket = new Basket(this.basket);
-        String actual = basket.getBasket();
-        String expected = this.basket;
-        Assert.assertNotNull(actual);
-        Assert.assertEquals(expected, actual);
-
-        Basket basket1 = new Basket(this.basket1);
-        String actual1 = basket1.getBasket();
-        String expected1 = this.basket1.toUpperCase(Locale.ROOT);
-        Assert.assertNotNull(actual1);
-        Assert.assertEquals(expected1, actual1);
-
-        Basket basket2 = new Basket(this.basket2);
-        String actual2 = basket2.getBasket();
-        String expected2 = this.basket2.toUpperCase(Locale.ROOT);
-        Assert.assertNotNull(actual2);
-        Assert.assertEquals(expected2, actual2);
-
-        Basket basket3 = new Basket(this.basket3);
-        String actual3 = basket3.getBasket();
-        String expected3 = this.basket3.toUpperCase(Locale.ROOT);
-        Assert.assertNotNull(actual3);
-        Assert.assertEquals(expected3, actual3);
-
-        Basket basket4 = new Basket(this.basket4);
-        String actual4 = basket4.getBasket();
-        String expected4 = this.basket4.toUpperCase(Locale.ROOT);
-        Assert.assertNotNull(actual4);
-        Assert.assertEquals(expected4, actual4);
-
-        Basket basketNull = new Basket(this.basketNull);
-        String actualNull = basketNull.getBasket();
-        String expectedNull = this.basketNull;
-        Assert.assertEquals(expectedNull, actualNull);
-
-        String actualA = Store.products.get(0).getName();
-        String expectedA = "A";
-        Assert.assertEquals(expectedA, actualA);
-
-        double actualAmount = Store.products.get(0).getAmount();
-        double expectedAmount = 0.0d;
-        Assert.assertEquals(expectedAmount, actualAmount, 0.01d);
+        Assert.assertNotNull(new Basket(this.basket).getBasket());
+        Assert.assertEquals(this.basket, new Basket(this.basket).getBasket());
+        Assert.assertNotNull(new Basket(this.basket1).getBasket());
+        Assert.assertEquals(this.basket1.toUpperCase(Locale.ROOT), new Basket(this.basket1).getBasket());
+        Assert.assertNotNull(new Basket(this.basket2).getBasket());
+        Assert.assertEquals(this.basket2.toUpperCase(Locale.ROOT), new Basket(this.basket2).getBasket());
+        Assert.assertNotNull(new Basket(this.basket3).getBasket());
+        Assert.assertEquals(this.basket3.toUpperCase(Locale.ROOT), new Basket(this.basket3).getBasket());
+        Assert.assertNotNull(new Basket(this.basket4).getBasket());
+        Assert.assertEquals(new Basket(this.basket4).getBasket().toUpperCase(Locale.ROOT), new Basket(this.basket4).getBasket());
+        assertNull(new Basket(null).getBasket());
+        Assert.assertEquals("A", new Store().getProduct(0).getName());
+        Assert.assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
     }
 
     @Test
     public void testCalculateTotalCost() {
-        Basket basket = new Basket(null);
-
-        double expected = 0.0d;
-        double actual = basket.getTotalPrice();
-        Assert.assertEquals(expected, actual, 0.01d);
-
-        Basket basket1 = new Basket(this.basket1);
-        double expected1 = 7.25d;
-        double actual1 = basket1.getTotalPrice();
-        Assert.assertEquals(expected1, actual1, 0.01d);
-
-        Basket basket2 = new Basket(this.basket2);
-        double expected2 = 0.0d;
-        double actual2 = basket2.getTotalPrice();
-        Assert.assertEquals(expected2, actual2, 0.01d);
-
-        Basket basket3 = new Basket(this.basket3);
-        double expected3 = 0.0d;
-        double actual3 = basket3.getTotalPrice();
-
-        double actualDiscount = Store.products.get(1).getDiscountAmount();
-        double expectedDiscount = 0.0d;
-
-        double actualAmount = Store.products.get(0).getAmount();
-        double expectedAmount = 0.0d;
-
-        Assert.assertEquals(expected3, actual3, 0.01d);
-        Assert.assertEquals(expectedDiscount, actualDiscount, 0.01d);
-        Assert.assertEquals(expectedAmount, actualAmount, 0.01d);
-
+        Assert.assertEquals(0.0d, new Basket(null).getTotalPrice(), 0.01d);
+        Assert.assertEquals(13.25d, new Basket(this.basket1).getTotalPrice(), 0.01d);
+        Assert.assertEquals(0.0d, new Basket(this.basket2).getTotalPrice(), 0.01d);
+        Assert.assertEquals(0.0d, new Basket(this.basket3).getTotalPrice(), 0.01d);
+        Assert.assertEquals(0.0d, new Store().getProduct(1).getDiscountAmount(), 0.01d);
+        Assert.assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
     }
 
     @Test
     public void ifBasketNull() {
-        Basket basket = new Basket(null);
-
-        basket.countProductsInBasket(null);
-        double actualTotalPrice = basket.getTotalPrice();
-        double expectedlTotalPrice = 0.0d;
-
-        Store.products.get(0).setAmount(7);
-        double expectedAmount = 7.0d;
-        double actualAmount = Store.products.get(0).getAmount();
-
-        Store.products.get(0).setPrice(15);
-        double expectedPrice = 15.0d;
-        double actualPrice = Store.products.get(0).getPrice();
-        Assert.assertEquals(expectedlTotalPrice, actualTotalPrice, 0.01d);
-        Assert.assertEquals(expectedAmount, actualAmount, 0.01d);
-        Assert.assertEquals(expectedPrice, actualPrice, 0.01d);
-        Assert.assertNull(basket.getBasket());
-
+        new Store().getProduct(0).setAmount(7);
+        new Store().getProduct(0).setPrice(15);
+        Assert.assertNull(new Basket(null).getBasket());
+        Assert.assertEquals(0.0d, new Basket(null).getTotalPrice(), 0.01d);
+        Assert.assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
+        Assert.assertEquals(1.25d, new Store().getProduct(0).getPrice(), 0.01d);
     }
 
     @Test(expected = AssertionError.class)
     public void shouldFailMinusDiscountAmount() {
-        Basket basket = new Basket(this.basket);
-        Product product = Store.products.get(0);
+        new Basket(this.basket);
         try {
-            product.setDiscountAmount(-3.0d);
+            new Store().getProduct(0).setDiscountAmount(-3.0d);
             Assert.fail("Not minus");
         } catch (AssertionError es) {
             Assert.assertEquals(0.0d, -100.0d, 0.01d);
@@ -171,10 +96,9 @@ public class BasketTest {
 
     @Test(expected = AssertionError.class)
     public void shouldFailMinusDiscountPrice() {
-        Basket basket = new Basket(this.basket);
-        Product product = Store.products.get(0);
+        new Basket(this.basket);
         try {
-            product.setDiscountPrice(-1.0d);
+            new Store().getProduct(0).setDiscountPrice(-1.0d);
             Assert.fail("Not minus");
         } catch (AssertionError es) {
             Assert.assertEquals(0.0d, -1.0d, 0.01d);
@@ -184,9 +108,8 @@ public class BasketTest {
     @Test(expected = AssertionError.class)
     public void shouldFailMinusPrice() {
         new Basket(this.basket);
-        Product product = Store.products.get(0);
         try {
-            product.setPrice(-2.0d);
+            new Store().getProduct(0).setPrice(-2.0d);
             Assert.fail("Not minus");
         } catch (AssertionError es) {
             Assert.assertEquals(0.0d, -10.0d, 0.01d);
@@ -196,95 +119,69 @@ public class BasketTest {
 
     @Test(expected = AssertionError.class)
     public void shouldIgnoreMinusAmount() {
-        Basket basket = new Basket(this.basket);
-        Product product = Store.products.get(0);
+        new Basket(this.basket);
         try {
-            product.setAmount(-2.0d);
+            new Store().getProduct(0).setAmount(-2.0d);
             Assert.fail("Not minus");
         } catch (AssertionError es) {
             Assert.assertEquals(0.0d, -100.0d, 0.01d);
         }
     }
-    @Test(expected = AssertionError.class)
-    public void shouldIgnoreIndexOF(){
-        Basket basket = new Basket(this.basket);
-        Product d = new Product("A",2.25d,17.0d, 2.0d, 17.0d);
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void shouldIgnoreIndexOF() {
+        new Basket(this.basket);
         try {
-            Store.products.add(4, d);
+            new Store().getProducts().add(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d));
             Assert.fail("Not");
-        }catch (AssertionError es) {
-            assertNull(Store.products.get(4));
-            assertEquals(d, Store.products.get(7));
-            assertEquals(d, Store.products.get(-3));
-            Store.products.clear();
-            assertEquals(d, Store.products.get(0));
+        } catch (AssertionError es) {
+            assertNull(new Store().getProduct(4));
+            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                    new Store().getProduct(7));
+            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                    new Store().getProduct(-3));
+            new Store().getProducts().clear();
+            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
+                    new Store().getProduct(0));
         }
 
     }
 
     @Test
     public void testTestEquals() {
-        Basket basket = new Basket("122\\];80");
-        this.basket = "122\\];80";
-        String[] basketChars = this.basket.split("");
+        String[] basketChars = new Basket("122\\];80").getBasket().split("");
         String a = basketChars[0];
         String b = "1";
         String c = "A";
-        boolean actual;
-        boolean actual1;
-        actual = b.equals(a);
-        actual1 = !a.equals(c);
-        assertTrue(actual);
-        assertTrue(actual1);
+        assertEquals(b, a);
+        assertNotEquals(a, c);
     }
 
     @Test(expected = AssertionError.class)
     public void isEmpty() {
-        this.basket = "";
-        Basket basket = new Basket(this.basket);
-        basket.calculateTotalCost(this.basket);
+        new Basket("").calculateTotalCost("");
         try {
             Assert.fail(" Try again \n English capital letters only");
             throw new RuntimeException();
         } catch (AssertionError ex) {
-
             Assert.assertEquals("ABCDAB", "");
         }
     }
 
     @Test
     public void Basket() {
-        String expected = "ABCDABA";
-        String actual = basket;
-        assertEquals(expected, actual);
-
-        String expected4 = null;
-        Assert.assertEquals(expected4, new Basket(null).getBasket());
-
-        Basket basket = new Basket(this.basket);
-        double expected1 = 24.75d;
-        Assert.assertEquals(expected1, basket.getTotalPrice(), 0.01d);
+        assertEquals("ABCDABA", basket);
+        assertNull(new Basket(null).getBasket());
+        Assert.assertEquals(13.25d, new Basket(this.basket).getTotalPrice(), 0.01d);
     }
 
     @Test
     public void happyFlow() {
-        Basket basket = new Basket("ABCDABA");
-
-        String expected = "ABCDABA";
         Assert.assertNotNull(basket);
-        Assert.assertEquals(expected, basket.getBasket());
-
-        double expected1 = 13.25d;
-        Assert.assertEquals(expected1, basket.getTotalPrice(), 0.01d);
-
-        int expected2 = 4;
-        Assert.assertEquals(expected2, Store.products.size());
-
-        String expected3 = "A";
-        Assert.assertEquals(expected3, Store.products.get(0).getName());
-
-        assertEquals(Store.products.get(0).getName(), expected3);
-
-
+        Assert.assertEquals("ABCDABA", new Basket("ABCDABA").getBasket());
+        Assert.assertEquals(13.25d, new Basket("ABCDABA").getTotalPrice(), 0.01d);
+        Assert.assertEquals(4, new Store().getProducts().size());
+        Assert.assertEquals("A", new Store().getProduct(0).getName());
+        assertEquals(new Store().getProduct(0).getName(), "A");
     }
 }

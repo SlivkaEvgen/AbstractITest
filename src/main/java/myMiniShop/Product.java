@@ -15,7 +15,6 @@ class Product {
     private double amount;
     @Setter
     private double discountAmount;
-
     protected Product(String name, double price, double discountPrice, double amount, double discountAmount) {
         this.name = name;
         this.price = price;
@@ -23,9 +22,7 @@ class Product {
         this.amount = amount;
         this.discountAmount = discountAmount;
     }
-    public Product(CalculatorImpl prod) {
-    }
-    public Product getAllProducts(int id) {
-        return Store.products.get(id);
+
+    Product() {
     }
 }
