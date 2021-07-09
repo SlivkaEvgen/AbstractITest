@@ -52,7 +52,6 @@ public final class BasketImpl implements Calculator {
         if (basket != null) {
             double count = 0.0d;
             for (Product product : basketProducts) {
-                product.setAmount(0.0d);
                 for (String basketChar : basket.split("")) {
                     if (basketChar.equals(product.getName())) {
                         product.setAmount(product.getAmount() + count + 1);
