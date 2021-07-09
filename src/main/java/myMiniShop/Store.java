@@ -23,9 +23,10 @@ class Store extends Product {
         return products.get(id);
     }
 
-    public Store(CalculatorImpl prod) {
+    public Store(Calculator prod) {
         super("A", 0.0d, 0.0d, 0.0d, 0.0d);
     }
+
     public Store(){
     }
 }

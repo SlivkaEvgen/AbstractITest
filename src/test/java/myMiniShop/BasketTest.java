@@ -1,22 +1,27 @@
 package myMiniShop;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.Assert;
+import org.junit.Before;
+
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.*;
-
 public class BasketTest {
+    BasketImpl basketImpl = new BasketImpl();
+    Store storeClass = new Store();
+    Product product = new Product();
+
     String basket = "ABCDABA";
     String basket1 = "abcdaba";
     String basket2 = "АБСДАБА";
     String basket3 = "12345//)'.";
     String basket4 = "\"\\\\.(gif|jpg|png)$\"";
-    List<Product> products = new ArrayList<>();
+
+    List<Product> products = storeClass.getProducts();
 
     @Before
     public void setUp() {
@@ -28,160 +33,190 @@ public class BasketTest {
 
     @Test
     public void testCheckingProductsInBasket() {
-        Assert.assertNotNull(basket1.toUpperCase(Locale.ROOT));
-        assertEquals("ABCDABA", basket1.toUpperCase(Locale.ROOT));
-        List<Product> products = new Store().getProducts();
-        products.add(4, new Product("A", 2.25d, 17.0d, 2.0d, 17.0d));
-        assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
-                products.get(4));
+        basketImpl.setBasket("ABCDABA");
+        String getBasket = basketImpl.getBasket();
+
+        assertNotNull(getBasket.toUpperCase(Locale.ROOT));
+        assertEquals("ABCDABA", getBasket.toUpperCase(Locale.ROOT));
+
+        product = new Product("A", 2.25d, 17.0d, 2.0d, 17.0d);
+        products.add(4, product);
+        assertEquals(product, products.get(4));
 
         String[] expected1 = {"A", "B", "C", "D", "A", "B", "A"};
-        Assert.assertNotNull(this.basket.split(""));
-        Assert.assertArrayEquals(expected1, this.basket.split(""));
-        String actual2 = expected1[0];
-        String null1 = "A";
-        Assert.assertNotNull(null1);
-        assertEquals("A", actual2);
-        Assert.assertEquals("\\.(GIF|JPG|PNG)$", new Basket("\\.(gif|jpg|png)$").getBasket());
-        assertNull(new Basket(null).getBasket());
+        assertNotNull(basket.split(""));
+        String actual = expected1[0];
+        String nullA = "A";
+        assertNotNull(nullA);
+        assertEquals("A", actual);
+
+        basketImpl.setBasket("\\.(gif|jpg|png)$");
+        assertEquals("ABCDABA", getBasket);
+
+        basketImpl.setBasket(null);
+        assertNull(basketImpl.getBasket());
     }
 
     @Test
     public void testCountProductsInBasket() {
-        Assert.assertNotNull(new Basket(this.basket).getBasket());
-        Assert.assertEquals(this.basket, new Basket(this.basket).getBasket());
-        Assert.assertNotNull(new Basket(this.basket1).getBasket());
-        Assert.assertEquals(this.basket1.toUpperCase(Locale.ROOT), new Basket(this.basket1).getBasket());
-        Assert.assertNotNull(new Basket(this.basket2).getBasket());
-        Assert.assertEquals(this.basket2.toUpperCase(Locale.ROOT), new Basket(this.basket2).getBasket());
-        Assert.assertNotNull(new Basket(this.basket3).getBasket());
-        Assert.assertEquals(this.basket3.toUpperCase(Locale.ROOT), new Basket(this.basket3).getBasket());
-        Assert.assertNotNull(new Basket(this.basket4).getBasket());
-        Assert.assertEquals(new Basket(this.basket4).getBasket().toUpperCase(Locale.ROOT), new Basket(this.basket4).getBasket());
-        assertNull(new Basket(null).getBasket());
-        Assert.assertEquals("A", new Store().getProduct(0).getName());
-        Assert.assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
+        basketImpl.setBasket(basket);
+        assertNotNull(basketImpl.getBasket());
+        assertEquals(basket, basketImpl.getBasket());
+
+        basketImpl.setBasket(basket1);
+        assertNotNull(basketImpl.getBasket());
+        assertEquals(basket1, basketImpl.getBasket());
+
+        basketImpl.setBasket(basket2);
+        assertNotNull(basketImpl.getBasket());
+        assertEquals(basket2.toUpperCase(Locale.ROOT), basketImpl.getBasket());
+
+        basketImpl.setBasket(basket3);
+        assertNotNull(basketImpl.getBasket());
+        assertEquals(basket3, basketImpl.getBasket());
+
+        basketImpl.setBasket(basket4);
+        assertNotNull(basketImpl.getBasket());
+        assertEquals(basket4, basketImpl.getBasket());
+
+        basketImpl.setBasket(null);
+        assertNull(basketImpl.getBasket());
+        assertEquals("A", storeClass.getProduct(0).getName());
+        assertEquals(0.0d, storeClass.getProduct(0).getAmount(), 0.01d);
     }
 
     @Test
     public void testCalculateTotalCost() {
-        Assert.assertEquals(0.0d, new Basket(null).getTotalPrice(), 0.01d);
-        Assert.assertEquals(13.25d, new Basket(this.basket1).getTotalPrice(), 0.01d);
-        Assert.assertEquals(0.0d, new Basket(this.basket2).getTotalPrice(), 0.01d);
-        Assert.assertEquals(0.0d, new Basket(this.basket3).getTotalPrice(), 0.01d);
-        Assert.assertEquals(0.0d, new Store().getProduct(1).getDiscountAmount(), 0.01d);
-        Assert.assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+
+        basketImpl.setBasket(basket1);
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+
+        basketImpl.setBasket(basket2);
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+
+        basketImpl.setBasket(basket3);
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+        assertEquals(0.0d, storeClass.getProduct(1).getDiscountAmount(), 0.01d);
+        assertEquals(3.0d, storeClass.getProduct(0).getDiscountAmount(), 0.01d);
     }
 
     @Test
     public void ifBasketNull() {
-        new Store().getProduct(0).setAmount(7);
-        new Store().getProduct(0).setPrice(15);
-        Assert.assertNull(new Basket(null).getBasket());
-        Assert.assertEquals(0.0d, new Basket(null).getTotalPrice(), 0.01d);
-        Assert.assertEquals(0.0d, new Store().getProduct(0).getAmount(), 0.01d);
-        Assert.assertEquals(1.25d, new Store().getProduct(0).getPrice(), 0.01d);
+        storeClass.getProduct(0).setAmount(7);
+        storeClass.getProduct(0).setPrice(15);
+        basketImpl.setBasket(null);
+        assertNull(basketImpl.getBasket());
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+        assertEquals(7.0d, storeClass.getProduct(0).getAmount(), 0.01d);
+        assertEquals(15.00d, storeClass.getProduct(0).getPrice(), 0.01d);
     }
 
     @Test(expected = AssertionError.class)
     public void shouldFailMinusDiscountAmount() {
-        new Basket(this.basket);
+        basketImpl.setBasket(basket);
         try {
-            new Store().getProduct(0).setDiscountAmount(-3.0d);
+            storeClass.getProduct(0).setDiscountAmount(-3.0d);
             Assert.fail("Not minus");
         } catch (AssertionError es) {
-            Assert.assertEquals(0.0d, -100.0d, 0.01d);
+            assertEquals(0.0d, -100.0d, 0.01d);
         }
     }
 
     @Test(expected = AssertionError.class)
     public void shouldFailMinusDiscountPrice() {
-        new Basket(this.basket);
+        basketImpl.setBasket(basket);
         try {
-            new Store().getProduct(0).setDiscountPrice(-1.0d);
-            Assert.fail("Not minus");
+            storeClass.getProduct(0).setDiscountPrice(-1.0d);
+            fail("Not minus");
         } catch (AssertionError es) {
-            Assert.assertEquals(0.0d, -1.0d, 0.01d);
+            assertEquals(0.0d, -1.0d, 0.01d);
         }
     }
 
     @Test(expected = AssertionError.class)
     public void shouldFailMinusPrice() {
-        new Basket(this.basket);
+        basketImpl.setBasket(basket);
         try {
-            new Store().getProduct(0).setPrice(-2.0d);
-            Assert.fail("Not minus");
+            storeClass.getProduct(0).setPrice(-2.0d);
+            fail("Not minus");
         } catch (AssertionError es) {
-            Assert.assertEquals(0.0d, -10.0d, 0.01d);
+            assertEquals(0.0d, -10.0d, 0.01d);
         }
 
     }
 
     @Test(expected = AssertionError.class)
     public void shouldIgnoreMinusAmount() {
-        new Basket(this.basket);
+        basketImpl.setBasket(basket);
         try {
-            new Store().getProduct(0).setAmount(-2.0d);
-            Assert.fail("Not minus");
+            storeClass.getProduct(0).setAmount(-2.0d);
+            fail("Not minus");
         } catch (AssertionError es) {
-            Assert.assertEquals(0.0d, -100.0d, 0.01d);
+            assertEquals(0.0d, -100.0d, 0.01d);
         }
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void shouldIgnoreIndexOF() {
-        new Basket(this.basket);
+        basketImpl.setBasket(basket);
+        product = new Product("A", 2.25d, 17.0d, 2.0d, 17.0d);
         try {
-            new Store().getProducts().add(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d));
-            Assert.fail("Not");
+            storeClass.getProducts().add(product);
+            fail("Not");
         } catch (AssertionError es) {
-            assertNull(new Store().getProduct(4));
-            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
-                    new Store().getProduct(7));
-            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
-                    new Store().getProduct(-3));
-            new Store().getProducts().clear();
-            assertEquals(new Product("A", 2.25d, 17.0d, 2.0d, 17.0d),
-                    new Store().getProduct(0));
+            assertNull(storeClass.getProduct(9));
+            assertEquals(product, storeClass.getProduct(7));
+            assertEquals(product, storeClass.getProduct(-3));
+            storeClass.getProducts().clear();
+            assertEquals(product, storeClass.getProduct(0));
         }
 
     }
 
-    @Test
-    public void testTestEquals() {
-        String[] basketChars = new Basket("122\\];80").getBasket().split("");
+    @Test(expected = AssertionError.class)
+    public void testAssertEquals() {
+        basketImpl.setBasket("122\\];80");
+        String[] basketChars = basketImpl.getBasket().split("");
         String a = basketChars[0];
         String b = "1";
         String c = "A";
         assertEquals(b, a);
-        assertNotEquals(a, c);
+        assertEquals(a, c);
     }
 
     @Test(expected = AssertionError.class)
     public void isEmpty() {
-        new Basket("").calculateTotalCost("");
+        basketImpl.calculateTotalCost("");
         try {
-            Assert.fail(" Try again \n English capital letters only");
+            fail(" Try again \n English capital letters only");
             throw new RuntimeException();
         } catch (AssertionError ex) {
-            Assert.assertEquals("ABCDAB", "");
+            assertEquals("ABCDAB", "");
         }
     }
 
     @Test
     public void Basket() {
         assertEquals("ABCDABA", basket);
-        assertNull(new Basket(null).getBasket());
-        Assert.assertEquals(13.25d, new Basket(this.basket).getTotalPrice(), 0.01d);
+        assertNull(basketImpl.getBasket());
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+        basketImpl.setBasket(null);
+        assertNull(basketImpl.getBasket());
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
     }
 
     @Test
     public void happyFlow() {
-        Assert.assertNotNull(basket);
-        Assert.assertEquals("ABCDABA", new Basket("ABCDABA").getBasket());
-        Assert.assertEquals(13.25d, new Basket("ABCDABA").getTotalPrice(), 0.01d);
-        Assert.assertEquals(4, new Store().getProducts().size());
-        Assert.assertEquals("A", new Store().getProduct(0).getName());
-        assertEquals(new Store().getProduct(0).getName(), "A");
+        basketImpl.setBasket(basket);
+        assertNotNull(basketImpl.getBasket());
+        assertEquals("ABCDABA", basketImpl.getBasket());
+        assertEquals(0.0d, basketImpl.getTotalPrice(), 0.01d);
+        assertNotNull(storeClass.getProducts());
+        assertEquals(8, storeClass.getProducts().size());
+        assertNotNull(storeClass.getProduct(0));
+        assertEquals("A", storeClass.getProduct(0).getName());
+        assertNotNull(storeClass.getProduct(1));
+        assertEquals("B", storeClass.getProduct(1).getName());
     }
 }
